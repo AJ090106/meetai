@@ -10,8 +10,9 @@ import {  OctagonAlertIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { FaGithub,FaGoogle} from "react-icons/fa";
 
 const FormSchema = z.object({
     name : z.string().min(1,{message : "Name is required"}),
@@ -26,7 +27,6 @@ const FormSchema = z.object({
 });
 
 export const SignUpView = () => {
-
     const router = useRouter();
     const [error,seterror] = useState<string|null>(null);
     const [pending, setpending] = useState(false);
@@ -50,11 +50,35 @@ export const SignUpView = () => {
     name : data.name,
     email: data.email,
     password: data.password,
+    callbackURL: "/",
   },
   {
     onSuccess: () => {
         setpending(false);
-      router.push("/");
+        router.push("/");
+    },
+    onError: ({error}) => {
+        setpending(false);
+        seterror(error.message)
+    },
+    
+  }
+);
+
+    };
+
+ const onSocial = async (provider : "github"|"google") => {
+        seterror(null);
+        setpending(true);
+     await  authClient.signIn.social(
+  {
+    provider : provider,
+    callbackURL : "/"
+  },
+  {
+    onSuccess: () => {
+        setpending(false);
+      
     },
     onError: ({error}) => {
         setpending(false);
@@ -180,18 +204,20 @@ export const SignUpView = () => {
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                         <Button
+                        onClick={() => onSocial("google")}
                         disabled = {pending}
                         variant={"outline"}
                         type="button"
                         className="w-full">
-                            Google
+                            <FaGoogle/>
                         </Button>
                         <Button
+                        onClick={() => onSocial("github")}
                         disabled = {pending}
                         variant={"outline"}
                         type="button"
                         className="w-full">
-                            GitHub
+                            <FaGithub/>
                         </Button>
                     </div>
                     <div className="text-center text-sm">
