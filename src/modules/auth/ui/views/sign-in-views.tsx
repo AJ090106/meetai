@@ -176,7 +176,7 @@ export const SignInView = () => {
                 </div>
                 </form>
                 </Form>
-                <div className="bg-radial from-green-700 to-green-900 relative hidden md:flex flex-col gap-y-4 justify-center items-center">
+                <div className="bg-radial from-sidebar-accent-to-sidebar to-green-900 relative hidden md:flex flex-col gap-y-4 justify-center items-center">
                     <img src ="/logo.svg" alt ="Image" className="p-4 h-[96px] w-[96px]"></img>
                      <p className="text-2xl font-semibold text-white p-5">
                         Converse.AI
